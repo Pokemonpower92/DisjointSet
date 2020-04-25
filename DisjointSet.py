@@ -11,7 +11,7 @@ class Node:
         self.size = 1
 
     def clear(self):
-        self.link = None
+        self.link = self
         self.size = 1
 
 class DisjointSet:
@@ -27,14 +27,13 @@ class DisjointSet:
     def print(self):
         for v in self.verticies.values():
             print(v.data + ':', v.link.data)
+
         print("Number of connected components:", self.components)
 
     # Finds the root of the node with the given data.
     def find(self, data):
-
         try:
             node = self.verticies[data]
-
             path = []
 
             while node.link != node:
@@ -50,27 +49,26 @@ class DisjointSet:
             print('Invalid Key')
             return None
 
+    # Performs union by size on two nodes given by keys a and b
+    def union(self, a, b):
 
+        try:
+            rootA = self.verticies[self.find(a)]
+            rootB = self.verticies[self.find(b)]
 
+            # In the case of components of the same size,
+            # The root will default to a
+            if rootA.size >= rootB.size:
+                rootB.link = rootA
+                rootA.size+=1
 
-links = {}
+            else:
+                rootA.link = rootB
+                rootB.size+=1
 
-for x in range(10):
-    n = Node(x)
-    links[n.data] = n
+            # Modify the number of connected components.
+            self.components-=1
 
-links['0'].link = links['2']
-links['1'].link = links['2']
-links['3'].link = links['1']
-links['4'].link = links['3']
-
-set = DisjointSet(links)
-
-set.print()
-
-b = set.find(4)
-
-if b:
-    print(b)
-
-set.print()
+        except KeyError:
+            print('Invalid Key')
+            return

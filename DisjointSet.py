@@ -16,6 +16,7 @@ class Node:
 
 class DisjointSet:
     ''' This is a union by size with path compression implementation. '''
+    ''' Verticies are stored as a dictionary of nodes keyed on their data. '''
 
     def __init__(self, verticies):
         self.verticies = verticies
@@ -23,14 +24,18 @@ class DisjointSet:
         self.components = self.size
 
     def print(self):
-        for v in self.verticies:
+        for v in self.verticies.values():
             print(v.data + ':', v.link)
+        print("Number of connected components:", self.components)
 
-links = []
+    def find(self, data):
+        return
+
+links = {}
 
 for x in range(10):
     n = Node(x)
-    links.append(n)
+    links[n.data] = n
 
 set = DisjointSet(links)
 

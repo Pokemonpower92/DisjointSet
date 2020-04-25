@@ -2,7 +2,7 @@
 # Union by size with path compression.
 
 class Node:
-    ''' Every disjoint set holds a list of node objects.
+    ''' Every disjoint set holds a dictionary of node objects.
         These are those objects. '''
 
     def __init__(self, data):
@@ -60,11 +60,11 @@ class DisjointSet:
             # The root will default to a
             if rootA.size >= rootB.size:
                 rootB.link = rootA
-                rootA.size+=1
+                rootA.size+= rootB.size
 
             else:
                 rootA.link = rootB
-                rootB.size+=1
+                rootB.size+= rootA.size
 
             # Modify the number of connected components.
             self.components-=1
@@ -72,3 +72,12 @@ class DisjointSet:
         except KeyError:
             print('Invalid Key')
             return
+
+    # Returns the number of connected nodes in node data's
+    # connected component.
+    def number(self, data):
+        try:
+            return self.verticies[self.find(data)].size
+        except KeyError:
+            print('Invalid Key')
+            return 0

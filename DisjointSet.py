@@ -18,10 +18,14 @@ class DisjointSet:
     ''' This is a union by size with path compression implementation. '''
     ''' Verticies are stored as a dictionary of nodes keyed on their data. '''
 
-    def __init__(self, verticies):
-        self.verticies = verticies
-        self.size = len(verticies)
+    def __init__(self, lst):
+        self.verticies = {}
+        self.size = len(lst)
         self.components = self.size
+
+        for l in lst:
+            n = Node(l)
+            self.verticies[str(l)] = n
 
     # Simply prints the set for bug testing.
     def print(self):
@@ -33,17 +37,17 @@ class DisjointSet:
     # Finds the root of the node with the given data.
     def find(self, data):
         try:
-            node = self.verticies[data]
+            node = self.verticies[str(data)]
             path = []
 
             while node.link != node:
                 path.append(node)
-                node = self.verticies[node.link.data]
+                node = self.verticies[str(node.link.data)]
 
             for v in path:
                 v.link = node
 
-            return node.data
+            return str(node.data)
 
         except KeyError:
             print('Invalid Key')
